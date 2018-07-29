@@ -111,7 +111,7 @@ public:
 * std::this_thread::sleep_for(std::chrono::seconds(1));
 */
 class timer{
-    std::chrono::time_point<std::chrono::system_clock> start,end;
+    std::chrono::time_point<std::chrono::system_clock> start;
 public:
     timer(){
          start = std::chrono::system_clock::now();
@@ -124,7 +124,7 @@ public:
     * milliseconds
     */
     long elapsed(){
-        end = std::chrono::system_clock::now();
+        std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
         auto elp = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
         return elp.count();
     }
