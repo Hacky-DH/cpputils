@@ -124,7 +124,7 @@ public:
     * milliseconds
     */
     long elapsed(){
-        std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
+        auto end = std::chrono::system_clock::now();
         auto elp = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
         return elp.count();
     }

@@ -4,9 +4,7 @@ bool log_to_file = false;
 std::string log_dir_prefix;
 std::ofstream log_stream;
 
-int main(int argc, char** argv){
-    (void)argv[0];
-    (void)argc;
+int main(int /*argc*/, char** /*argv*/){
     random_generator rg;
     timer t;
     for(int i=0; i<10; ++i){
