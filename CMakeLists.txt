@@ -21,3 +21,4 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 pthread
 )
 
+add_subdirectory(block_queue)
