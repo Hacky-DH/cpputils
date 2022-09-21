@@ -4,6 +4,8 @@
 * @author Hacky-DH
 * @version 1.0.0
 * @date 20180728
+*
+* 20220921 add timer ElapsedStr
 */
 
 #include <iostream>
@@ -101,8 +103,12 @@ public:
     }
 };
 
+using namespace std::chrono;
+
 /**
 * @bref timer
+* 
+*  measure time elapsed, not for wall clock time
 * @example
 * @code
 *   timer t;
@@ -110,26 +116,51 @@ public:
 * sleep 1 sec
 * std::this_thread::sleep_for(std::chrono::seconds(1));
 */
-class timer{
-    std::chrono::time_point<std::chrono::system_clock> start;
-public:
-    timer(){
-         start = std::chrono::system_clock::now();
-         //std::chrono::high_resolution_clock::now()
-    }
-    void reset(){
-        start = std::chrono::system_clock::now();
-    }
-    /*
-    * milliseconds
-    */
-    long elapsed(){
-        auto end = std::chrono::system_clock::now();
-        auto elp = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
-        return elp.count();
-    }
-    bool reach(std::chrono::seconds duration){
-        return std::chrono::system_clock::now() - start >= duration;
-    }
-};
+class Timer {
+  time_point<high_resolution_clock> start_;
 
+ public:
+  Timer() { Reset(); }
+  void Reset() { start_ = high_resolution_clock::now(); }
+  // return microseconds
+  int64_t Elapsed() {
+    auto end = high_resolution_clock::now();
+    auto elp = duration_cast<microseconds>(end - start_);
+    return elp.count();
+  }
+  // human readable string from microseconds to hours
+  std::string ElapsedStr() {
+    microseconds micro(Elapsed());
+    if (micro.count() == 0) {
+      return "0ms";
+    }
+    auto h = duration_cast<hours>(micro);
+    micro -= h;
+    auto m = duration_cast<minutes>(micro);
+    micro -= m;
+    auto sec = duration_cast<seconds>(micro);
+    micro -= sec;
+    auto ms = duration_cast<milliseconds>(micro);
+    micro -= ms;
+    auto hc = h.count(), mc = m.count(), sc = sec.count(), msc = ms.count(),
+         mic = micro.count();
+    std::ostringstream ss;
+    ss.fill('0');
+    if (hc) {
+      ss << hc << "h ";
+    }
+    if (mc) {
+      ss << mc << "m ";
+    }
+    if (sc) {
+      ss << sc << "s ";
+    }
+    if (msc) {
+      ss << msc << "ms ";
+    }
+    if (mic) {
+      ss << mic << "us";
+    }
+    return ss.str();
+  }
+};

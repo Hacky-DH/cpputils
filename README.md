@@ -9,8 +9,10 @@ log("DEBUG")<<"debug "<<str<<","<<num<<std::endl;
 ```
 ## timer
 ```
-timer t;
-long e = t.elapsed();
+Timer t;
+int64_t e = t.Elapsed();
+
+cout<< t.ElapsedStr();
 ```
 
 ## random generator
