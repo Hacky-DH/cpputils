@@ -6,7 +6,20 @@ namespace utils {
 
 using namespace std::chrono;
 
-// trigger at most once every N seconds or once every N counts.
+/**
+  * trigger at most once every N seconds or once every N counts.
+  * 
+  * example:
+  size_t count = 1;
+  Trigger triger(every_n_secs, every_n_counts);
+  while(true) {
+    if (triger.ShouldTrigger(count)) {
+      auto elapsed = triger.Update(count);
+      // print count and elapsed
+    }
+    ++count;
+  }
+*/
 class Trigger {
   size_t every_count_;
   size_t last_triggered_count_ = 0;
