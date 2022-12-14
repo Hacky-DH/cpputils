@@ -9,13 +9,13 @@ namespace utils {
 
 class Stat {
  public:
-  static int64_t GetRSS() {
+  static uint64_t GetRSS() {
     std::fstream stat("/proc/self/stat");
     if (!stat.is_open()) {
       return 0;
     }
     std::string str;
-    int64_t size;
+    uint64_t size;
     // i=22 VSZ Byte
     for (size_t i = 0; i < 25; ++i) {
       if (i == 23) {
@@ -29,7 +29,7 @@ class Stat {
   }
 
   static std::string GetRSSStr() {
-    int64_t rss = GetRSS();
+    uint64_t rss = GetRSS();
     double result = 1.;
     std::string fotmat("%.3f");
     char buff[64];
@@ -46,7 +46,7 @@ class Stat {
       fotmat.append("KiB");
       result = 1.;
     }
-    snprintf(buff, 64, fotmat.c_str(), rss / result);
+    snprintf(buff, 64, fotmat.c_str(), static_cast<double>(rss) / result);
     return buff;
   }
 };
